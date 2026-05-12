@@ -11,7 +11,7 @@ RUN bun run build
 FROM oven/bun:1
 WORKDIR /app
 COPY --from=build /app/.output ./.output
-COPY --from=build /app/server/database/migrations ./server/database/migrations 2>/dev/null || true
+COPY --from=build /app/server/database/migrations ./server/database/migrations
 COPY --from=build /app/drizzle.config.ts ./
 ENV NODE_ENV=production \
     NITRO_PORT=3000 \
