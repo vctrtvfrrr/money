@@ -15,8 +15,7 @@ COPY --from=build /app/server/database/migrations ./server/database/migrations
 COPY --from=build /app/drizzle.config.ts ./
 ENV NODE_ENV=production \
     NITRO_PORT=3000 \
-    NITRO_HOST=0.0.0.0 \
-    DATABASE_URL=/data/money.sqlite
+    NITRO_HOST=0.0.0.0
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s \
   CMD bun -e "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"

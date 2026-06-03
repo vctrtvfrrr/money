@@ -1,0 +1,28 @@
+services:
+  money:
+    image: registry.codelab.tec.br/vctrtvfrrr/money:latest
+    container_name: money
+    restart: unless-stopped
+    pull_policy: always
+    env_file:
+      - .env
+    volumes:
+      - /opt/data/money:/data
+    networks:
+      - traefik-public
+    mem_limit: 512m
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-public"
+      - "traefik.http.routers.money.rule=Host(`money.victor.etc.br`)"
+      - "traefik.http.routers.money.entrypoints=websecure"
+      - "traefik.http.routers.money.tls=true"
+      - "traefik.http.routers.money.tls.certresolver=cloudflare"
+      - "traefik.http.routers.money.tls.domains[0].main=victor.etc.br"
+      - "traefik.http.routers.money.tls.domains[0].sans=*.victor.etc.br"
+      - "traefik.http.routers.money.middlewares=security-headers@file"
+      - "traefik.http.services.money.loadbalancer.server.port=3000"
+
+networks:
+  traefik-public:
+    external: true
